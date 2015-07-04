@@ -15,109 +15,139 @@ angular.module('myApp')
         'AngularJS',
     ];
       							$scope.reset = function() {
-      								$scope.longURL = "";
-      								$scope.shortURL = "";
-      							};
+                    									$scope.longURL = "";
+                    									$scope.shortURL = "";
+                    								};
 
-      							$scope.render = function() {
-      								return "http://localhost:4567/getLongUrl?shortUrl="
-      										+ $scope.shortUrl;
-      							}
+                    								$scope.render = function() {
+                    									return "http://localhost:4567/getLongUrl?shortUrl="
+                    											+ $scope.shortUrl;
+                    								};
 
-      							$scope.fun = function() {
-      								$http
-      										.get($scope.render())
-      										.success(
-      												function(response) {
-      													$scope.assoc = "long URL associato: ";
-      													$scope.nam = response.data;
-      													if ($scope.nam.err == "ok") {
-      														$scope.name = $scope.nam.longUrl;
-      													} else {
-      														$scope.name = $scope.nam.err;
-      													}
-      												});
-      							}
+                    								$scope.fun = function() {
+                    									$http
+                    											.get($scope.render())
+                    											.success(
+                    													function(resp) {
+                    														$scope.ris = "Long URL: ";
+                    														$scope.nam = resp.data;
+                    														if ($scope.nam.err == "ok") {
+                    															$scope.lon = $scope.nam.longUrl;
+                    															$scope.nome = "";
+                    															$scope.erro = "";
+                    														} else {
+                    															$scope.lon = $scope.nam.err;
+                    															$scope.nome = "";
+                    															$scope.ris = "";
+                    															$scope.erro = "";
+                    														}
+                    													}).error(function(resp) {
+                    												$scope.boh = "errore";
+                    											});
+                    								};
 
-      							$scope.save = function() {
-      								return "http://localhost:4567/addShortUrl?shortUrl="
-      										+ $scope.shortURL
-      										+ "&longUrl="
-      										+ $scope.longURL;
-      							}
+                    								$scope.save = function() {
+                    									return "http://localhost:4567/addShortUrl?shortUrl="
+                    											+ $scope.shortURL
+                    											+ "&longUrl="
+                    											+ $scope.longURL;
+                    								};
 
-      							$scope.salva = function() {
-      								$http
-      										.get($scope.save())
-      										.success(
-      												function(response) {
-      													//EFFETTUARE IL CONTROLLO SUI CAMPI VUOTI
-      													$scope.res = response.data;
-      													if ($scope.res.err != "ok") {
-      														$scope.ris = $scope.res.err;
-      													} else {
-      														$scope.ris = "Il long URL '"
-      																+ $scope.longURL
-      																+ "' e lo short URL '"
-      																+ $scope.shortURL
-      																+ "' sono stati associati con successo!";
-      														$scope.reset();
-      													}
-      												});
-      							}
+                    								$scope.salva = function() {
+                    									$http
+                    											.get($scope.save())
+                    											.success(
+                    													function(risp) {
+                    														$scope.res = risp.data;
+                    														if ($scope.res.err != "ok") {
+                    															$scope.ris = $scope.res.err;
+                    														} else {
+                    															$scope.stringAssociation = "Long URL '"
+                    																	+ $scope.longURL
+                    																	+ "' e Short URL 'localhost:4567/"
+                    																	+ $scope.shortURL
+                    																	+ "' associated!";
+                    															$scope.reset();
+                    														}
+                    													}).error(function(risp) {
+                    												$scope.res = "errore";
+                    											});
+                    								};
 
-      							$scope.asd = function() {
-      								return "http://localhost:4567/addClick?shortUrl="
-      										+ $scope.shortUrl;
-      							}
+                    								$scope.asd = function() {
+                    									return "http://localhost:4567/addClick?shortUrl="
+                    											+ $scope.shortUrl;
+                    								};
 
-      							$scope.vai = function() {
-      								var e = $scope.name;
-      								$scope.w = e;
-      								$http.get($scope.asd()).success(//se clicco su go prima che su show long url, mi apre pagina bianca
-      								function(response) {
-      									$scope.aggiungi = response.data.err;
-      									if ($scope.aggiungi == "ok") {
-      										$window.open($scope.w);
-      									} else {
-      										$scope.errore = $scope.aggiungi;
-      									}
-      								});
-      							}
+                    								$scope.vai = function() {
+                    									var e = $scope.lon;
+                    									$scope.w = e;
+                    									$http
+                    											.get($scope.asd())
+                    											.success(
+                    													//se clicco su go prima che su show long url, mi apre pagina bianca
+                    													function(response) {
+                    														$scope.aggiungi = response.data;
+                    														if ($scope.aggiungi.err == "ok") {
+                    															$scope.apri = $scope.aggiungi.longUrl;
+                    															$window
+                    																	.open($scope.apri);
+                    														} else {
+                    															$scope.errore = $scope.aggiungi;
+                    														}
+                    													}).error(
+                    													function(response) {
+                    														$scope.boh = "errore";
+                    													});
+                    								};
 
-      							$scope.perStats = function() {
-      								return "http://localhost:4567/getStats?shortUrl="
-      										+ $scope.shortUrl;
-      							}
+                    								$scope.perStats = function() {
+                    									return "http://localhost:4567/getStats?shortUrl="
+                    											+ $scope.shortUrl;
+                    								};
 
-      							$scope.viewStats = function() {
-      								$http.get($scope.perStats()).success(
-      										function(risposta) {
-      											$scope.nom = risposta.data;
-      											if ($scope.nom.err == "ok") {
-      												$scope.nome = $scope.nom.stats;
-      											} else {
-      												$scope.erro = $scope.nom.err; //MODIFICARE!!!
-      											}
-      										});
-      							}
+                    								$scope.viewStats = function() {
+                    									$http
+                    											.get($scope.perStats())
+                    											.success(
+                    													function(risposta) {
+                    														$scope.nom = risposta.data;
+                    														if ($scope.nom.err == "ok") {
+                    															$scope.nome = $scope.nom.stats;
+                    															$scope.erro = "";
+                    															$scope.lon = "";
+                    															$scope.ris = "";
+                    														} else {
+                    															$scope.erro = $scope.nom.err;
+                    															$scope.nome = "";
+                    															$scope.ris = "";
+                    															$scope.lon = "";
+                    														}
+                    													}).error(
+                    													function(risposta) {
+                    														$scope.boh = "errore";
+                    													});
+                    								};
 
-      							$scope.generate = function() {
-      								return "http://localhost:4567/generateShortUrl?longUrl="
-      										+ $scope.longURL;
-      							}
-      							$scope.gen = function() {
-      								$http
-      										.get($scope.generate())
-      										.success(
-      												function(risposta) {
-      													$scope.ss = risposta.data;
-      													if ($scope.ss.err == "ok") {
-      														$scope.nuovo = $scope.ss.shortUrl;
-      														$scope.shortURL = angular
-      																.copy($scope.nuovo);
-      													}
-      												});
-      							};
-      						});
-      		//inserire un tasto resetta per il visualizza long url?
+                    								$scope.generate = function() {
+                    									return "http://localhost:4567/generateShortUrl?longUrl="
+                    											+ $scope.longURL;
+                    								};
+
+                    								$scope.gen = function() {
+                    									$http
+                    											.get($scope.generate())
+                    											.success(
+                    													function(risposta) {
+                    														$scope.ss = risposta.data;
+                    														if ($scope.ss.err == "ok") {
+                    															$scope.nuovo = $scope.ss.shortUrl;
+                    															$scope.shortURL = $scope.nuovo;
+                    														}
+                    													}).error(
+                    													function(risposta) {
+                    														$scope.boh = "errore";
+                    													});
+                    								};
+                    							});
+
